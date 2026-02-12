@@ -1,10 +1,19 @@
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+let ai: GoogleGenAI | null = null;
+
+const getAiClient = () => {
+  if (!ai) {
+    // Initialize lazily so the app doesn't crash on load if process.env is accessed too early
+    ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  }
+  return ai;
+};
 
 export const generateRomanticPoem = async (): Promise<string> => {
   try {
-    const response = await ai.models.generateContent({
+    const client = getAiClient();
+    const response = await client.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: "Write a short, whimsical, and sweet 4-line poem for a girl named Mikaela who just agreed to be my valentine and go on a date with me. Mention that life is meaningful. Do NOT use the phrase 'I love you'. Keep it under 50 words. Emojis are okay.",
       config: {
