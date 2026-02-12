@@ -1,30 +1,17 @@
-import { GoogleGenAI } from "@google/genai";
-
-let ai: GoogleGenAI | null = null;
-
-const getAiClient = () => {
-  if (!ai) {
-    // Initialize lazily so the app doesn't crash on load if process.env is accessed too early
-    ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-  }
-  return ai;
-};
+// Replaced Gemini service with static content as requested
 
 export const generateRomanticPoem = async (): Promise<string> => {
-  try {
-    const client = getAiClient();
-    const response = await client.models.generateContent({
-      model: 'gemini-3-flash-preview',
-      contents: "Write a short, whimsical, and sweet 4-line poem for a girl named Mikaela who just agreed to be my valentine and go on a date with me. Mention that life is meaningful. Do NOT use the phrase 'I love you'. Keep it under 50 words. Emojis are okay.",
-      config: {
-        maxOutputTokens: 100,
-        temperature: 0.8,
-      }
-    });
-    
-    return response.text || "Roses are red, violets are blue, Mikaela, I'm so happy I'm going out with you! 💖";
-  } catch (error) {
-    console.error("Failed to generate poem:", error);
-    return "Mikaela, you make every day brighter just by being in it. ✨";
-  }
+  // Simulate a brief "thinking" delay for effect to keep the UX feeling magical
+  await new Promise(resolve => setTimeout(resolve, 2000));
+
+  const poems = [
+    "Roses are red, violets are blue, Mikaela, I'm so happy I'm going out with you! 💖",
+    "Mikaela, you make every day brighter just by being in it. ✨",
+    "Every moment with you is a treasure. Can't wait for our date!",
+    "You bring so much joy to my life. Here's to new memories together! 🥂",
+    "Life is a beautiful journey, and I'm so glad to share a part of it with you.",
+    "My heart does a little dance every time I think of you, Mikaela."
+  ];
+
+  return poems[Math.floor(Math.random() * poems.length)];
 };
